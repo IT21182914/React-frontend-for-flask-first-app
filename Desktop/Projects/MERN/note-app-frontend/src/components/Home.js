@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
@@ -28,37 +29,49 @@ const Home = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8 p-4">
-      <h1 className="text-4xl font-bold mb-6 text-center">Notes</h1>
-      <div className="flex justify-end mb-4">
+    <div className="container mx-auto mt-12 p-4">
+      <h1 className="text-5xl font-extrabold mb-8 text-center text-gray-800">
+        Notes
+      </h1>
+      <div className="flex justify-end mb-6">
         <Link
           to="/add"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
+          className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded shadow-md transition"
         >
           Add Note
         </Link>
       </div>
-      <ul className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {notes.map((note) => (
-          <li
+          <motion.div
             key={note.id}
-            className="bg-white shadow-md rounded p-4 flex justify-between items-center transition hover:shadow-lg"
+            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
+            whileHover={{ scale: 1.05 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            <Link
-              to={`/edit/${note.id}`}
-              className="text-xl font-semibold text-gray-800 hover:text-gray-900"
-            >
+            <h2 className="text-2xl font-bold mb-2 text-gray-800">
               {note.title}
-            </Link>
-            <button
-              onClick={() => deleteNote(note.id)}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow"
-            >
-              Delete
-            </button>
-          </li>
+            </h2>
+            <p className="text-gray-600 mb-4">{note.content}</p>
+            <div className="flex justify-between">
+              <Link
+                to={`/edit/${note.id}`}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-md transition"
+              >
+                Update
+              </Link>
+              <button
+                onClick={() => deleteNote(note.id)}
+                className="bg-red-500 hover:bg-red-600 transition text-white  px-4 py-2 rounded shadow-md "
+              >
+                Delete
+              </button>
+            </div>
+          </motion.div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
